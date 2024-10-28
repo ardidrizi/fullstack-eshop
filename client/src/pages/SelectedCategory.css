@@ -1,0 +1,11 @@
+.products-card {
+  padding: 5rem;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Responsive grid with at least 250px per product */
+  gap: 1.5rem; /* Space between products */
+  align-items: stretch;
+  gap: 1.5rem;
+}

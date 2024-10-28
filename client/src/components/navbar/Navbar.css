@@ -1,0 +1,85 @@
+/* Navbar Styling */
+.navbar {
+  background-color: #2278d3;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.navbar-logo a {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff3f3f; /* Bright accent color */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-logo a:hover {
+  color: #ff3f3f; /* Hover color change */
+}
+
+.navbar-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 20px; /* Increase gap between menu items */
+}
+
+.navbar-menu ul li {
+  display: inline-block;
+}
+
+.navbar-menu ul li a {
+  color: #fff; /* White text */
+  text-decoration: none; /* No underline */
+  font-size: 18px;
+  font-weight: 500;
+  transition: color 0.3s ease; /* Smooth hover transition */
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.navbar-menu ul li a:hover {
+  color: #ff6b6b; /* Bright hover color */
+  background-color: rgba(255, 107, 107, 0.2); /* Slight background on hover */
+}
+
+.navbar-icons a {
+  color: #fff; /* White icons */
+  font-size: 20px;
+  margin-left: 20px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-icons a:hover {
+  color: #ff6b6b; /* Bright color on hover */
+}
+
+/* Add some hover effect to icons */
+.navbar-icons a i {
+  transition: transform 0.3s ease;
+}
+
+.navbar-icons a:hover i {
+  transform: scale(1.2); /* Slight zoom on hover */
+}
+
+.active-link {
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
+}

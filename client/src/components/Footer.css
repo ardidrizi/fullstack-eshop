@@ -1,0 +1,45 @@
+/* Footer Styling */
+.footer {
+  background-color: #2278d3;
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.social-media-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Social media icons */
+.social-media-links a {
+  color: #fff;
+  font-size: 1.5rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effects for social media links */
+.social-media-links a:hover {
+  color: #ff3f3f; /* Change to green on hover, adjust as desired */
+  transform: scale(1.2);
+}
+
+/* Footer responsiveness */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+  }
+}

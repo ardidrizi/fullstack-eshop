@@ -1,0 +1,32 @@
+.product-detail {
+  padding: 5rem;
+  text-align: center;
+}
+
+.product-detail-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.product-detail-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.product-detail-description {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-detail-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.product-detail-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
