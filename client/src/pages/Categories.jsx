@@ -12,7 +12,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/products");
+        const response = await axios.get(import.meta.env.VITE_SERVER_URL);
         const products = response.data;
 
         // Extract unique categories from the products

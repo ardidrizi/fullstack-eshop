@@ -13,7 +13,7 @@ const ProductDetail = () => {
     const fetchProductWithId = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/products/${id}`,
+          `${import.meta.env.VITE_SERVER_URL}/${id}`,
           {
             headers: { "Content-Type": "application/json" },
           }

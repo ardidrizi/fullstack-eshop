@@ -16,7 +16,7 @@ const SelectedCategory = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/products/categories/${category}`
+          `${import.meta.env.VITE_SERVER_URL}/categories/${category}`
         );
         setProducts(response.data);
         setLoading(false);

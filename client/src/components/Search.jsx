@@ -20,7 +20,7 @@ const Search = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/products/search?" + currentSearchInput,
+        import.meta.env.VITE_SERVER_URL + "search?" + currentSearchInput,
         {
           params: { keyword: currentSearchInput },
           headers: { "Content-Type": "application/json" },
