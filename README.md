@@ -53,5 +53,3 @@ Check out the live demo [here](https://fullstack-eshop-production.up.railway.app
 ## License
 
 - This project is licensed under the MIT License.
-
-You can add this content to your `README.md` file on GitHub.
