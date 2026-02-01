@@ -1,34 +1,108 @@
+.navbar-search-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 420px;
+  width: 100%;
+}
+
 .navbar-search {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .navbar-search input {
-  padding: 8px 15px;
+  padding: 10px 16px;
   border: 1px solid #ff6b6b;
   border-radius: 30px;
   background-color: #f0f0f0;
   color: #333;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .navbar-search input:focus {
   border-color: #ff3f3f;
-  outline: none; /* Remove default outline */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.25);
 }
 
 .navbar-search button {
   background-color: #ff6b6b;
   border: none;
   color: #fff;
-  padding: 8px 15px;
-  margin-left: 8px;
+  padding: 10px 16px;
   border-radius: 30px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .navbar-search button:hover {
   background-color: #ff3f3f;
+  transform: translateY(-1px);
+}
+
+.search-status {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.error-message {
+  color: #c62828;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.search-result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: #fff5f5;
+}
+
+.search-result-name {
+  font-weight: 600;
+  color: #2d2d2d;
+}
+
+.search-result-description {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+@media (max-width: 900px) {
+  .navbar-search-wrapper {
+    max-width: 100%;
+  }
+
+  .search-results {
+    position: static;
+    margin-top: 8px;
+  }
 }

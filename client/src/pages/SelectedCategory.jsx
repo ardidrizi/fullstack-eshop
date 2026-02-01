@@ -28,8 +28,8 @@ const SelectedCategory = () => {
     fetchProducts();
   }, [category]);
 
-  if (loading) <p>Loading products...</p>;
-  if (error) <p>{error}</p>;
+  if (loading) return <p>Loading products...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="selected-product-category">
@@ -41,7 +41,7 @@ const SelectedCategory = () => {
             name={product.name}
             price={product.price}
             description={product.description}
-            imgUrl={product.imageUrl}
+            imgUrl={product.images?.[0] ?? ""}
           />
         ))}
       </div>

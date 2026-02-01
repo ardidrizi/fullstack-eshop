@@ -37,7 +37,7 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <div className="navbar-search-wrapper">
       <form className="navbar-search" onSubmit={handleSearchSubmit}>
         <input
           type="text"
@@ -50,20 +50,26 @@ const Search = () => {
         </button>
       </form>
 
-      {isLoading && <p>Loading...</p>}
-      {error && <p className="error-message">{error}</p>}
+      {isLoading && <p className="search-status">Loading...</p>}
+      {error && <p className="search-status error-message">{error}</p>}
 
-      <div className="search-results">
+      <div className="search-results" aria-live="polite">
         {searchResults.length > 0
           ? searchResults.map((product) => (
-              <div key={product._id} className="search-result-item">
-                <Link to={`/product/${product._id}`}>
-                  <h3>{product.name}</h3>
-                  <p>{product.description}</p>
-                </Link>
-              </div>
+              <Link
+                key={product._id}
+                to={`/shop/${product._id}`}
+                className="search-result-item"
+              >
+                <span className="search-result-name">{product.name}</span>
+                <span className="search-result-description">
+                  {product.description}
+                </span>
+              </Link>
             ))
-          : !isLoading && <p></p>}
+          : !isLoading && currentSearchInput && (
+              <p className="search-status">No results found.</p>
+            )}
       </div>
     </div>
   );

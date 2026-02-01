@@ -9,21 +9,19 @@ const Shop = () => {
   // console.log(products);
 
   useEffect(() => {
-    setTimeout(() => {
-      const fetchData = async () => {
-        try {
-          const resp = await axios.get(import.meta.env.VITE_SERVER_URL, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          setProducts(resp.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      fetchData();
-    }, 1000);
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get(import.meta.env.VITE_SERVER_URL, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setProducts(resp.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (

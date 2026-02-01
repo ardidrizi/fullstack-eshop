@@ -1,12 +1,3 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
 # E-Shop
 
 A modern, responsive e-commerce web application where users can browse products, shop by categories, view featured items, and navigate easily with a streamlined UI.
@@ -27,10 +18,40 @@ A modern, responsive e-commerce web application where users can browse products,
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/e-shop.git
+   cd e-shop
+   ```
 
-## Install dependencies
+2. Install dependencies:
+   ```bash
+   cd server
+   npm install
+   cd ..\client
+   npm install
+   ```
 
-```bash
-cd e-shop
-npm install
-npm run server
+3. Configure environment variables:
+   - `server\.env`:
+     ```bash
+     MONGO_URL=your_mongodb_connection_string
+     PORT=3000
+     ```
+   - `client\.env`:
+     ```bash
+     VITE_SERVER_URL=http://localhost:3000/api/products
+     ```
+
+4. Run the server:
+   ```bash
+   cd server
+   npm run dev
+   ```
+
+5. Run the client:
+   ```bash
+   cd ..\client
+   npm run dev
+   ```
+
+## Notes
+- The API is served at `http://localhost:3000/api/products`.
+- Update `VITE_SERVER_URL` if your server runs on a different host or port.

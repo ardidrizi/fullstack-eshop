@@ -41,7 +41,9 @@
 .btn-product:hover {
   background-color: #ff3f3f;
 }
-*/ .product-grid {
+ */
+
+.product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
@@ -54,11 +56,16 @@
   padding: 20px;
   text-align: center;
   border-radius: 10px;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .product-card:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .product-image {
@@ -66,6 +73,7 @@
   height: 150px;
   object-fit: cover;
   margin-bottom: 15px;
+  border-radius: 8px;
 }
 
 .product-info h3 {

@@ -7,14 +7,12 @@ import "./App.css";
 import Shop from "./pages/Shop";
 import Footer from "./components/Footer";
 import SelectedCategory from "./pages/SelectedCategory";
-import Search from "./components/Search";
 import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
     <>
       <Navbar />
-      <Search />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/shop" element={<Shop />} />

@@ -3,6 +3,38 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Categories.css";
 
+const emoji = [
+  { name: "Electronics", emoji: "💻" },
+  { name: "Audio", emoji: "🎧" },
+  { name: "Wearables", emoji: "👔" },
+  { name: "Books", emoji: "📚" },
+  { name: "Furniture", emoji: "🛋️" },
+  { name: "Sports", emoji: "🏀" },
+  { name: "Kitchen", emoji: "🔪" },
+  { name: "Transport", emoji: "🚌" },
+  { name: "Home Appliances", emoji: "🍳" },
+  { name: "Home Security", emoji: "🔒" },
+  { name: "Accessories", emoji: "🧳" },
+  { name: "Beauty", emoji: "💄" },
+  { name: "Food", emoji: "🍕" },
+  { name: "Cameras", emoji: "🎥" },
+  { name: "Clothing", emoji: "👕" },
+  { name: "Mobile Phones", emoji: "📱" },
+  { name: "Computers", emoji: "🖥️" },
+];
+
+const categoryImages = {
+  Electronics: "/images/banner.avif",
+  Clothing: "/images/banner2.avif",
+  "Home & Kitchen": "/images/banner.avif",
+  "Sports & Outdoors": "/images/banner2.avif",
+  default: "/images/banner.avif",
+};
+
+const getCategoryImageUrl = (category) => {
+  return categoryImages[category] || categoryImages.default;
+};
+
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +52,7 @@ const Categories = () => {
           new Set(products.map((product) => product.category))
         ).map((category) => ({
           name: category,
-          imageUrl: getCategoryImageUrl(category), // Placeholder for category images
+          imageUrl: getCategoryImageUrl(category),
         }));
 
         setCategories(uniqueCategories);
@@ -34,18 +66,6 @@ const Categories = () => {
     fetchProducts();
   }, []);
 
-  // Function to map category names to placeholder images
-  const getCategoryImageUrl = (category) => {
-    const categoryImages = {
-      Electronics: "https://example.com/images/electronics.jpg",
-      Clothing: "https://example.com/images/clothing.jpg",
-      "Home & Kitchen": "https://example.com/images/home-kitchen.jpg",
-      "Sports & Outdoors": "https://example.com/images/sports-outdoors.jpg",
-    };
-
-    return categoryImages[category] || "https://example.com/images/default.jpg";
-  };
-
   if (loading) {
     return <p>Loading categories...</p>;
   }
@@ -53,26 +73,6 @@ const Categories = () => {
   if (error) {
     return <p>{error}</p>;
   }
-
-  const emoji = [
-    { name: "Electronics", emoji: "💻" }, // General electronics
-    { name: "Audio", emoji: "🎧" }, // Specific item under electronics
-    { name: "Wearables", emoji: "👔" },
-    { name: "Books", emoji: "📚" },
-    { name: "Furniture", emoji: "🛋️" },
-    { name: "Sports", emoji: "🏀" },
-    { name: "Kitchen", emoji: "🔪" },
-    { name: "Transport", emoji: "🚌" },
-    { name: "Home Appliances", emoji: "🍳" },
-    { name: "Home Security", emoji: "🍳" },
-    { name: "Accessories", emoji: "🪫" },
-    { name: "Beauty", emoji: "💄" },
-    { name: "Food", emoji: "🍕" },
-    { name: "Cameras", emoji: "🎥" },
-    { name: "Clothing", emoji: "👕" },
-    { name: "Mobile Phones", emoji: "📱" },
-    { name: "Computers", emoji: "💻" },
-  ];
 
   return (
     <div className="categories-container">
@@ -85,21 +85,21 @@ const Categories = () => {
                 {emoji.find((e) => e.name === category.name)?.emoji}
               </span>
             </Link>
-            {/* <img
+            <img
               src={category.imageUrl}
               alt={category.name}
               className="category-image"
-            /> */}
-            {/* <h2 className="category-name">{category.name}</h2> */}
-            {/* <Link to={`/categories/${category.name}`} className="category-link">
+            />
+            <h2 className="category-name">{category.name}</h2>
+            <Link to={`/categories/${category.name}`} className="category-link">
               Shop Now
-            </Link> */}
+            </Link>
           </div>
         ))}
 
         <div className="category-card">
           <img
-            src="https://example.com/images/default.jpg"
+            src="/images/banner2.avif"
             alt="More categories"
             className="category-image"
           />

@@ -8,7 +8,7 @@ function ListAll() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(import.meta.env.VITE_SERVER_URL;, {
+        const resp = await axios.get(import.meta.env.VITE_SERVER_URL, {
           headers: {
             "Content-Type": "application/json",
           },

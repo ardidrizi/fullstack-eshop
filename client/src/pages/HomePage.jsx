@@ -12,22 +12,20 @@ const Homepage = () => {
   // console.log(products);
 
   useEffect(() => {
-    setTimeout(() => {
-      const fetchData = async () => {
-        try {
-          const resp = await axios.get(import.meta.env.VITE_SERVER_URL, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          setProducts(resp.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get(import.meta.env.VITE_SERVER_URL, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setProducts(resp.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-      fetchData();
-    }, 3000);
+    fetchData();
   }, []);
 
   return (

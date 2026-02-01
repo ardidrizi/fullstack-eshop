@@ -9,3 +9,15 @@
   align-items: stretch;
   gap: 1.5rem;
 }
+
+.selected-product-category {
+  margin-top: 96px;
+  padding: 1rem 2rem 3rem;
+}
+
+.selected-product-category h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #2d2d2d;
+}
