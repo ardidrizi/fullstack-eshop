@@ -31,6 +31,28 @@
   align-items: stretch; /* Ensure product cards stretch equally */
 }
 
+.product-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-add-cart {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #2278d3;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-add-cart:hover {
+  background: #1b64b3;
+  transform: translateY(-1px);
+}
+
 /* Product card (this assumes you have a `ProductCard` component) */
 .product-card {
   border: 1px solid #e1e1e1;

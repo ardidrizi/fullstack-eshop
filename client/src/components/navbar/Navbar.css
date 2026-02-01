@@ -73,6 +73,22 @@
   color: #ff6b6b; /* Bright color on hover */
 }
 
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-icons .navbar-logout {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
 /* Add some hover effect to icons */
 .navbar-icons a i {
   transition: transform 0.3s ease;

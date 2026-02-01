@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Search from "../Search";
+import useAuth from "../../context/useAuth";
 // import { NavLink } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Navbar.css";
@@ -15,6 +16,8 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -44,14 +47,31 @@ const Navbar = () => {
         <Search />
 
         <div className="navbar-icons">
+          {user ? (
+            <>
+              <Link to="/cart">
+                <i className="fa fa-shopping-cart"></i>
+              </Link>
+              <Link to="/orders">
+                <i className="fa fa-receipt"></i>
+              </Link>
+              {user.role === "admin" && (
+                <Link to="/admin/products">
+                  <i className="fa fa-toolbox"></i>
+                </Link>
+              )}
+              <button className="navbar-logout" onClick={logout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Sign up</Link>
+            </>
+          )}
           <Link to="/wishlist">
             <i className="fa fa-heart"></i>
-          </Link>
-          <Link to="/account">
-            <i className="fa fa-user"></i>
-          </Link>
-          <Link to="/cart">
-            <i className="fa fa-shopping-cart"></i>
           </Link>
         </div>
       </div>

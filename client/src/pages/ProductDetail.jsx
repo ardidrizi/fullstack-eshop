@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css"; // New CSS file for styling
+import { apiRequest } from "../services/api";
+import useAuth from "../context/useAuth";
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProductWithId = async () => {
@@ -47,6 +50,19 @@ const ProductDetail = () => {
             />
           ) : (
             <p>No image available</p>
+          )}
+          {user && (
+            <button
+              className="btn-detail-cart"
+              onClick={async () => {
+                await apiRequest("/cart", {
+                  method: "POST",
+                  body: JSON.stringify({ productId: product._id, quantity: 1 }),
+                });
+              }}
+            >
+              Add to cart
+            </button>
           )}
         </div>
       )}

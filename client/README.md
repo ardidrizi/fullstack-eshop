@@ -38,6 +38,7 @@ A modern, responsive e-commerce web application where users can browse products,
    - `client\.env`:
      ```bash
      VITE_SERVER_URL=http://localhost:3000/api/products
+     VITE_API_URL=http://localhost:3000/api
      ```
 
 4. Run the server:
@@ -55,3 +56,5 @@ A modern, responsive e-commerce web application where users can browse products,
 ## Notes
 - The API is served at `http://localhost:3000/api/products`.
 - Update `VITE_SERVER_URL` if your server runs on a different host or port.
+- Admin seed login: `admin@eshop.dev` / `Admin123!`
+- Run `npm run seed` in `server` to create demo data.

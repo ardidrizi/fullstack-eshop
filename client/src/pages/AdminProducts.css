@@ -1,0 +1,74 @@
+.admin-products {
+  margin-top: 96px;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.admin-form {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-form input,
+.admin-form textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.admin-form button {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: #2278d3;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-item {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-item button {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none;
+  background: #ff6b6b;
+  color: #fff;
+  cursor: pointer;
+}
+
+.admin-error {
+  color: #c62828;
+}
+
+@media (max-width: 900px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
