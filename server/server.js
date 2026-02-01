@@ -3,6 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes/productRoutes");
+const authRoutes = require("./routes/authRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const adminProductRoutes = require("./routes/adminProductRoutes");
 const PORT = process.env.PORT || 3000;
 const MOGNO_URL = process.env.MONGO_URL;
 const morgan = require("morgan");
@@ -35,6 +39,10 @@ mongoose
   });
 
 app.use("/api/products", productRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/admin/products", adminProductRoutes);
 app.use((req, res, next) => {
   if (/(.ico|.js|.css|.jpg|.png|.map)$/i.test(req.path)) {
     next();
