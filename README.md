@@ -30,13 +30,51 @@ A modern, responsive e-commerce web application where users can browse products,
 
 3. Install the dependencies:
    ```bash
+   cd server
+   npm install
+   cd ..\client
    npm install
    ```
 
-4. Start the server:
+4. Configure environment variables:
+   - `server\.env`:
+     ```bash
+     MONGO_URL=your_mongodb_connection_string
+     PORT=3000
+     JWT_SECRET=your_jwt_secret
+     CLIENT_ORIGIN=http://localhost:5173
+     ```
+   - `client\.env`:
+     ```bash
+     VITE_API_URL=http://localhost:3000/api
+     VITE_SERVER_URL=http://localhost:3000/api/products
+     ```
+
+5. Run the server:
    ```bash
-   npm run server
+   cd server
+   npm run dev
    ```
+
+6. Run the client:
+   ```bash
+   cd ..\client
+   npm run dev
+   ```
+
+## Deployment (Render)
+- Build command:
+  ```bash
+  cd server && npm install
+  cd ..\client && npm install
+  npm run build
+  ```
+- Start command:
+  ```bash
+  cd server && npm start
+  ```
+- Set environment variables in Render:
+  - `MONGO_URL`, `JWT_SECRET`, `CLIENT_ORIGIN` (comma-separated list allowed), `PORT`
 
 ## Usage
 

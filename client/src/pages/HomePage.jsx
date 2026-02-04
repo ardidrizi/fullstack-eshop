@@ -1,11 +1,11 @@
 import ProductCard from "../components/ProductCard";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Categories from "./Categories";
 import { motion } from "framer-motion";
 // import { useParams } from "react-router-dom";
 import "./Homepage.css";
 import { Link } from "react-router-dom";
+import { PRODUCTS_URL } from "../services/api";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
@@ -14,12 +14,12 @@ const Homepage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(import.meta.env.VITE_SERVER_URL, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        setProducts(resp.data);
+        const resp = await fetch(PRODUCTS_URL);
+        if (!resp.ok) {
+          throw new Error("Failed to load products");
+        }
+        const data = await resp.json();
+        setProducts(data);
       } catch (error) {
         console.log(error);
       }
@@ -38,11 +38,17 @@ const Homepage = () => {
         transition={{ duration: 0.8 }}
       >
         <div className="hero-content">
+          <p className="hero-kicker">Fresh drops every week</p>
           <h1>Welcome to E-Shop</h1>
-          <p>Find the best products at the best prices</p>
-          <a href="/shop" className="btn-hero">
-            Shop Now
-          </a>
+          <p>Curated essentials, fast checkout, and delivery you can trust.</p>
+          <div className="hero-actions">
+            <Link to="/shop" className="btn-hero">
+              Shop Now
+            </Link>
+            <Link to="/about-us" className="btn-hero-secondary">
+              About us
+            </Link>
+          </div>
         </div>
       </motion.section>
 
@@ -61,6 +67,9 @@ const Homepage = () => {
       {/* Featured Products Section */}
       <section className="featured-products">
         <h2>Featured Products</h2>
+        <p className="featured-subtitle">
+          Hand-picked items with the best balance of quality and value.
+        </p>
         <motion.div
           className="product-grid"
           initial="hidden"

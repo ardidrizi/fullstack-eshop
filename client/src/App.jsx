@@ -15,6 +15,8 @@ import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import AdminProducts from "./pages/AdminProducts";
 import ProtectedRoute from "./components/ProtectedRoute";
+import About from "./pages/About";
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path="/shop/:id" element={<ProductDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/about-us" element={<About />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route
             path="/cart"
             element={

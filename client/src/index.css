@@ -47,6 +47,12 @@ img {
   display: block;
 }
 
+.page-status {
+  text-align: center;
+  margin: 2rem auto;
+  color: var(--color-muted);
+}
+
 button,
 input,
 textarea,

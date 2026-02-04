@@ -9,9 +9,9 @@ import "./Navbar.css";
 const navLinks = [
   { title: "Home", path: "/" },
   { title: "Shop", path: "/shop" },
-  { title: "Categories", path: "categories" },
+  { title: "Categories", path: "/categories" },
   // { title: "Deals", path: "deals" },
-  { title: "About Us", path: "about-us" },
+  { title: "About Us", path: "/about-us" },
   // { title: "Contact", path: "contact" },
 ];
 

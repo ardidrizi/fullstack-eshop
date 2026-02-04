@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css"; // New CSS file for styling
-import { apiRequest } from "../services/api";
+import { apiRequest, PRODUCTS_URL } from "../services/api";
 import useAuth from "../context/useAuth";
 
 const ProductDetail = () => {
@@ -15,13 +14,12 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProductWithId = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/${id}`,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        setProduct(response.data);
+        const response = await fetch(`${PRODUCTS_URL}/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to load product");
+        }
+        const data = await response.json();
+        setProduct(data);
       } catch (error) {
         setError("Failed to fetch product details. Please try again later.");
         console.error(error);
@@ -32,14 +30,17 @@ const ProductDetail = () => {
     fetchProductWithId();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="page-status">Loading...</p>;
+  if (error) return <p className="page-status">{error}</p>;
 
   return (
     <div className="product-detail">
       {product && (
         <div className="product-detail-content">
           <h2 className="product-detail-title">{product.name}</h2>
+          <p className="product-detail-meta">
+            Category: {product.category || "General"}
+          </p>
           <p className="product-detail-description">{product.description}</p>
           <p className="product-detail-price">Price: ${product.price}</p>
           {product.images && product.images.length > 0 ? (
@@ -63,6 +64,11 @@ const ProductDetail = () => {
             >
               Add to cart
             </button>
+          )}
+          {!user && (
+            <p className="product-detail-hint">
+              Sign in to add items to your cart and track orders.
+            </p>
           )}
         </div>
       )}

@@ -29,6 +29,12 @@
   color: var(--color-muted);
 }
 
+.product-detail-meta {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
 .product-detail-price {
   font-size: 1.5rem;
   font-weight: bold;
@@ -59,4 +65,10 @@
 .btn-detail-cart:hover {
   background: var(--color-primary-dark);
   transform: translateY(-1px);
+}
+
+.product-detail-hint {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
 }

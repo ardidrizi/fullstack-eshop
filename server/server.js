@@ -18,8 +18,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Middleware
 
+const corsOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: corsOrigins,
   optionsSuccessStatus: 200,
 };
 

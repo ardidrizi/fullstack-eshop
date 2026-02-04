@@ -20,6 +20,29 @@
   color: var(--color-text);
 }
 
+.shop-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: flex-end;
+}
+
+.shop-kicker {
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+}
+
+.shop-subtitle {
+  margin: 0;
+  max-width: 420px;
+  color: var(--color-muted);
+}
+
 /* Product grid layout */
 .product-grid {
   display: grid;

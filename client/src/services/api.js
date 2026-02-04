@@ -1,4 +1,10 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const normalizeBase = (value) => value.replace(/\/$/, "");
+export const API_BASE_URL = normalizeBase(
+  import.meta.env.VITE_API_URL || "/api"
+);
+export const PRODUCTS_URL = normalizeBase(
+  import.meta.env.VITE_SERVER_URL || `${API_BASE_URL}/products`
+);
 
 export const getToken = () => localStorage.getItem("token");
 
@@ -12,7 +18,7 @@ export const apiRequest = async (path, options = {}) => {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers,
   });

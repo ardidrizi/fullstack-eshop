@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Search.css";
+import { PRODUCTS_URL } from "../services/api";
 
 const Search = () => {
   const [currentSearchInput, setCurrentSearchInput] = useState("");
@@ -11,23 +11,33 @@ const Search = () => {
 
   const handleSearchChange = (e) => {
     setCurrentSearchInput(e.target.value);
+    if (!e.target.value.trim()) {
+      setSearchResults([]);
+    }
   };
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
+    if (!currentSearchInput.trim()) {
+      setSearchResults([]);
+      setError(null);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get(
-        import.meta.env.VITE_SERVER_URL + "search?" + currentSearchInput,
-        {
-          params: { keyword: currentSearchInput },
-          headers: { "Content-Type": "application/json" },
-        }
+      const response = await fetch(
+        `${PRODUCTS_URL}/search?keyword=${encodeURIComponent(
+          currentSearchInput.trim()
+        )}`
       );
-      console.log(response.data);
-      setSearchResults(response.data);
+      if (!response.ok) {
+        throw new Error("Search request failed");
+      }
+      const data = await response.json();
+      setSearchResults(data);
     } catch (error) {
       setError("Failed to fetch search results.");
       console.error("Search error:", error);

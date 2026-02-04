@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { PRODUCTS_URL } from "../services/api";
 import "./Categories.css";
 
 const emoji = [
@@ -44,8 +44,11 @@ const Categories = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL);
-        const products = response.data;
+        const response = await fetch(PRODUCTS_URL);
+        if (!response.ok) {
+          throw new Error("Failed to load categories");
+        }
+        const products = await response.json();
 
         // Extract unique categories from the products
         const uniqueCategories = Array.from(
@@ -57,8 +60,8 @@ const Categories = () => {
 
         setCategories(uniqueCategories);
         setLoading(false);
-      } catch (err) {
-        setError("Failed to load categories", err);
+      } catch {
+        setError("Failed to load categories");
         setLoading(false);
       }
     };
@@ -67,11 +70,11 @@ const Categories = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading categories...</p>;
+    return <p className="page-status">Loading categories...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p className="page-status">{error}</p>;
   }
 
   return (
