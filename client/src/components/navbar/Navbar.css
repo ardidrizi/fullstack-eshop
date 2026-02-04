@@ -1,12 +1,12 @@
 /* Navbar Styling */
 .navbar {
-  background-color: #2278d3;
+  background-color: var(--color-primary);
   padding: 16px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   z-index: 1000;
   position: fixed;
   top: 0;
@@ -25,13 +25,13 @@
 .navbar-logo a {
   font-size: 28px;
   font-weight: bold;
-  color: #ff3f3f; /* Bright accent color */
+  color: #fff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .navbar-logo a:hover {
-  color: #ff3f3f; /* Hover color change */
+  color: #fff;
 }
 
 .navbar-menu ul {
@@ -57,8 +57,8 @@
 }
 
 .navbar-menu ul li a:hover {
-  color: #ff6b6b; /* Bright hover color */
-  background-color: rgba(255, 107, 107, 0.2); /* Slight background on hover */
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.16);
 }
 
 .navbar-icons a {
@@ -70,7 +70,7 @@
 }
 
 .navbar-icons a:hover {
-  color: #ff6b6b; /* Bright color on hover */
+  color: #fff;
 }
 
 .navbar-icons {
@@ -87,6 +87,12 @@
   color: #fff;
   cursor: pointer;
   font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.navbar-icons .navbar-logout:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
 }
 
 /* Add some hover effect to icons */
@@ -100,7 +106,7 @@
 
 .active-link {
   font-weight: bold;
-  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.85);
   padding-bottom: 4px;
 }
 

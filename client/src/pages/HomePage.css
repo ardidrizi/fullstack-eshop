@@ -15,11 +15,11 @@
 
 .hero-content {
   text-align: center;
-  color: #2b2b2b;
-  background: rgba(255, 255, 255, 0.75);
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.85);
   padding: 32px 40px;
-  border-radius: 16px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .hero-content h1 {
@@ -29,15 +29,16 @@
 
 .hero-content p {
   font-size: 1.1rem;
+  color: var(--color-muted);
   margin-bottom: 30px;
 }
 
 .btn-hero {
-  background-color: #ff6b6b;
+  background-color: var(--color-accent);
   color: white;
   padding: 12px 28px;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 999px;
   transition: background-color 0.2s ease, transform 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -46,7 +47,7 @@
 }
 
 .btn-hero:hover {
-  background-color: #ff3f3f;
+  background-color: var(--color-accent-dark);
   transform: translateY(-1px);
 }
 
@@ -69,7 +70,7 @@
 
 /* Categories Section */
 .categories {
-  padding: 40px 20px;
+  padding: 32px 20px;
   text-align: center;
 }
 
@@ -80,7 +81,7 @@
 }
 
 .homepage {
-  background-color: #f8f9fa;
+  background-color: var(--color-bg);
 }
 
 .featured-products {
@@ -93,7 +94,7 @@
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 2rem;
-  color: #2d2d2d;
+  color: var(--color-text);
 }
 
 .product-grid {

@@ -44,7 +44,8 @@ const Cart = () => {
     }
   };
 
-  const subtotal = items.reduce(
+  const displayItems = items.filter((item) => item?.product);
+  const subtotal = displayItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
@@ -62,12 +63,12 @@ const Cart = () => {
         </Link>
       </div>
       {error && <p className="cart-error">{error}</p>}
-      {items.length === 0 ? (
+      {displayItems.length === 0 ? (
         <p className="cart-empty">Your cart is empty.</p>
       ) : (
         <div className="cart-content">
           <div className="cart-items">
-            {items.map((item) => (
+            {displayItems.map((item) => (
               <div key={item.product._id} className="cart-item">
                 <img src={item.product.images?.[0]} alt={item.product.name} />
                 <div className="cart-item-info">

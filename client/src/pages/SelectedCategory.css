@@ -13,11 +13,12 @@
 .selected-product-category {
   margin-top: 96px;
   padding: 1rem 2rem 3rem;
+  background: var(--color-bg);
 }
 
 .selected-product-category h1 {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 2rem;
-  color: #2d2d2d;
+  color: var(--color-text);
 }

@@ -1,6 +1,6 @@
 /* Footer Styling */
 .footer {
-  background-color: #2278d3;
+  background-color: var(--color-primary);
   color: #fff;
   padding: 2rem 1rem;
   text-align: center;
@@ -34,7 +34,7 @@
 
 /* Hover effects for social media links */
 .social-media-links a:hover {
-  color: #ff3f3f; /* Change to green on hover, adjust as desired */
+  color: var(--color-accent);
   transform: scale(1.2);
 }
 

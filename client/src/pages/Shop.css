@@ -1,7 +1,7 @@
 /* Container for the whole product section */
 .products-section {
   padding: 2rem 1rem;
-  background-color: #f8f9fa;
+  background-color: var(--color-bg);
   margin-top: 96px;
 }
 
@@ -17,7 +17,7 @@
   font-weight: bold;
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #333;
+  color: var(--color-text);
 }
 
 /* Product grid layout */
@@ -41,7 +41,7 @@
   padding: 10px 14px;
   border-radius: 999px;
   border: none;
-  background: #2278d3;
+  background: var(--color-primary);
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -49,18 +49,18 @@
 }
 
 .btn-add-cart:hover {
-  background: #1b64b3;
+  background: var(--color-primary-dark);
   transform: translateY(-1px);
 }
 
 /* Product card (this assumes you have a `ProductCard` component) */
 .product-card {
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: 1rem;
   text-align: center;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .product-card img {
@@ -71,13 +71,13 @@
 
 .product-card h3 {
   font-size: 1.2rem;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
 .product-card p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--color-muted);
   margin-bottom: 1rem;
 }
 
