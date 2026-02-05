@@ -1,9 +1,9 @@
 const normalizeBase = (value) => value.replace(/\/$/, "");
 export const API_BASE_URL = normalizeBase(
-  import.meta.env.VITE_API_URL || "/api"
+  import.meta.env.VITE_API_URL || "/api",
 );
 export const PRODUCTS_URL = normalizeBase(
-  import.meta.env.VITE_SERVER_URL || `${API_BASE_URL}/products`
+  import.meta.env.VITE_SERVER_URL || `${API_BASE_URL}/products`,
 );
 
 export const getToken = () => localStorage.getItem("token");

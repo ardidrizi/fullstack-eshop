@@ -8,9 +8,9 @@ const About = () => {
           <p className="about-kicker">Our story</p>
           <h1>Built for everyday shopping, crafted with care.</h1>
           <p className="about-lead">
-            E-Shop is a curated marketplace for modern essentials, combining fast
-            discovery with a reliable checkout experience. We focus on quality,
-            honest pricing, and a customer-first experience.
+            E-Shop is a curated marketplace for modern essentials, combining
+            fast discovery with a reliable checkout experience. We focus on
+            quality, honest pricing, and a customer-first experience.
           </p>
         </div>
       </div>
@@ -19,8 +19,8 @@ const About = () => {
         <div className="about-card">
           <h2>Curated catalog</h2>
           <p>
-            We hand-pick categories and seasonal collections so shoppers can find
-            what they need without endless scrolling.
+            We hand-pick categories and seasonal collections so shoppers can
+            find what they need without endless scrolling.
           </p>
         </div>
         <div className="about-card">

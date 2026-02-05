@@ -85,7 +85,9 @@
   background: var(--color-accent);
   color: #fff;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .cart-item-actions button:hover {
@@ -109,7 +111,9 @@
   color: #fff;
   border-radius: 999px;
   font-weight: 600;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .cart-checkout:hover {

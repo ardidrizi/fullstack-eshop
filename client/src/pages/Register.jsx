@@ -16,7 +16,10 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleChange = (event) => {
-    setFormState((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+    setFormState((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = async (event) => {

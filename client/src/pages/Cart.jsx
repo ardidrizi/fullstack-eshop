@@ -47,7 +47,7 @@ const Cart = () => {
   const displayItems = items.filter((item) => item?.product);
   const subtotal = displayItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
-    0
+    0,
   );
 
   if (loading) {
@@ -81,7 +81,10 @@ const Cart = () => {
                     min="1"
                     value={item.quantity}
                     onChange={(event) =>
-                      updateQuantity(item.product._id, Number(event.target.value))
+                      updateQuantity(
+                        item.product._id,
+                        Number(event.target.value),
+                      )
                     }
                   />
                   <button onClick={() => removeItem(item.product._id)}>
