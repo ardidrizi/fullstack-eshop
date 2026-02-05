@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Categories from "./Categories";
 import { motion } from "framer-motion";
 // import { useParams } from "react-router-dom";
-import "./HomePage.css";
+import "./HomePage.css ";
 import { Link } from "react-router-dom";
 import { PRODUCTS_URL } from "../services/api";
 
