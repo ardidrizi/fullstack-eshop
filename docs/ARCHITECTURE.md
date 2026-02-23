@@ -38,6 +38,7 @@ fullstack-eshop/
 ```
 
 ## Request flow (example: authenticated product create)
+
 1. Client sends `POST /api/products` with `Authorization: Bearer <token>`.
 2. `requireAuth` validates JWT and resolves user.
 3. `requireAdmin` verifies role is `admin`.
