@@ -5,8 +5,33 @@ const baseUrl = `http://127.0.0.1:${port}`;
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const waitForServer = async (attempts = 30) => {
+const npmExecutable = process.platform === "win32" ? "npm.cmd" : "npm";
+
+const devServer = spawn(
+  npmExecutable,
+  ["run", "dev", "--", "--host", "127.0.0.1", "--port", String(port)],
+  {
+    stdio: "ignore",
+  }
+);
+
+let devServerExited = false;
+let devServerExitCode = null;
+
+const serverExitPromise = new Promise((resolve) => {
+  devServer.on("exit", (code) => {
+    devServerExited = true;
+    devServerExitCode = code;
+    resolve(code);
+  });
+});
+
+const waitForServer = async (attempts = 60) => {
   for (let i = 0; i < attempts; i += 1) {
+    if (devServerExited) {
+      throw new Error(`Vite dev server exited before becoming ready (code: ${devServerExitCode})`);
+    }
+
     try {
       const response = await fetch(baseUrl);
       if (response.ok) {
@@ -15,15 +40,12 @@ const waitForServer = async (attempts = 30) => {
     } catch {
       // ignore until server is ready
     }
+
     await wait(500);
   }
+
   throw new Error("Vite dev server did not start in time");
 };
-
-const devServer = spawn("npm", ["run", "dev", "--", "--host", "127.0.0.1", "--port", String(port)], {
-  stdio: "ignore",
-  shell: true,
-});
 
 try {
   const response = await waitForServer();
@@ -39,5 +61,12 @@ try {
 
   console.log("Smoke test passed: client app serves the homepage shell.");
 } finally {
-  devServer.kill("SIGTERM");
+  if (!devServerExited) {
+    devServer.kill("SIGTERM");
+    await Promise.race([serverExitPromise, wait(2000)]);
+
+    if (!devServerExited) {
+      devServer.kill("SIGKILL");
+    }
+  }
 }
