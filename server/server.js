@@ -1,37 +1,12 @@
 require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
 const mongoose = require("mongoose");
-const productRoutes = require("./routes/productRoutes");
-const authRoutes = require("./routes/authRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const adminProductRoutes = require("./routes/adminProductRoutes");
+const app = require("./app");
+
 const PORT = process.env.PORT || 3000;
-const MOGNO_URL = process.env.MONGO_URL;
-const morgan = require("morgan");
-const app = express();
-const path = require("path");
+const MONGO_URL = process.env.MONGO_URL;
 
-app.use(morgan("dev"));
-app.use(express.static(path.join(__dirname, "public")));
-
-// Middleware
-
-const corsOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-const corsOptions = {
-  origin: corsOrigins,
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-app.use(express.json({ extended: false }));
-// Connect to MongoDB
 mongoose
-  .connect(MOGNO_URL)
+  .connect(MONGO_URL)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
@@ -41,19 +16,3 @@ mongoose
   .catch((err) => {
     console.log("Error: ", err);
   });
-
-app.use("/api/products", productRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/admin/products", adminProductRoutes);
-app.use((req, res, next) => {
-  if (/(.ico|.js|.css|.jpg|.png|.map)$/i.test(req.path)) {
-    next();
-  } else {
-    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-    res.header("Expires", "-1");
-    res.header("Pragma", "no-cache");
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  }
-});

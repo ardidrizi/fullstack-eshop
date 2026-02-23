@@ -29,6 +29,8 @@ npm --prefix client run build
 
 Use short, descriptive branches:
 
+Use short, descriptive branches
+
 - `docs/readme-refresh`
 - `test/api-smoke`
 - `chore/ci-workflow`

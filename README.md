@@ -1,93 +1,117 @@
 # Fullstack E-Shop
 
-A modern, responsive e-commerce web application where users can browse products, shop by categories, view featured items, and navigate easily with a streamlined UI.
+A production-minded MERN e-commerce app showcasing end-to-end shopping flows (auth, cart, orders, and admin product management) with a deployable setup and CI-backed quality checks.
 
-## Features
+[![CI](https://github.com/ardidrizi/fullstack-eshop/actions/workflows/ci.yml/badge.svg)](https://github.com/ardidrizi/fullstack-eshop/actions/workflows/ci.yml)
 
-- **Homepage**: Hero section, featured products, and category browsing.
-- **Product Categories**: Dynamic product categorization for easy navigation.
-- **Product Listing**: View product details, add to cart.
-- **Responsive Design**: Fully responsive for desktop and mobile users.
-- **Footer**: Includes social media links with modern styling and hover effects.
+## Live demo
+- Railway: https://fullstack-eshop-production.up.railway.app/
 
-## Technologies
+## Key features
+- JWT authentication with protected user and admin routes.
+- Product catalog browsing with category and search support.
+- Cart and checkout-ready order workflow.
+- Admin-only product management endpoints for create/update/delete.
+- Responsive React UI with reusable components and route-based pages.
+- CI pipeline validating server lint/tests and client lint/tests/build on pull requests.
 
-- **Frontend**: React, CSS, FontAwesome (for icons)
-- **Backend**: Node.js, Express, MongoDB (REST API for products)
-- **Styling**: Modern, mobile-responsive CSS with flexbox and grid layouts
+## Tech stack
+- **Client:** React, React Router, Vite, ESLint
+- **Server:** Node.js, Express, Mongoose
+- **Database:** MongoDB Atlas (or compatible MongoDB deployment)
+- **Auth:** JWT + bcrypt password hashing
 
-## Installation
+## Architecture overview
+This repository is organized as a simple two-app monorepo:
+- `client/`: React SPA (pages, components, context, API service helpers)
+- `server/`: Express API (routes, controllers, models, middleware, seeding)
+- `docs/`: project architecture and screenshot guidance
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ardidrizi/fullstack-eshop.git
-   ```
+For a quick diagram and request flow, see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-2. Navigate to the project directory:
-   ```bash
-   cd fullstack-eshop
-   ```
+## Local setup
+### 1) Clone and install
+```bash
+git clone https://github.com/ardidrizi/fullstack-eshop.git
+cd fullstack-eshop
+npm --prefix server install
+npm --prefix client install
+```
 
-3. Install the dependencies:
-   ```bash
-   cd server
-   npm install
-   cd ..\client
-   npm install
-   ```
+### 2) Configure environment files
+```bash
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+```
 
-4. Configure environment variables:
-   - `server\.env`:
-     ```bash
-     MONGO_URL=your_mongodb_connection_string
-     PORT=3000
-     JWT_SECRET=your_jwt_secret
-     CLIENT_ORIGIN=http://localhost:5173
-     ```
-   - `client\.env`:
-     ```bash
-     VITE_API_URL=http://localhost:3000/api
-     VITE_SERVER_URL=http://localhost:3000/api/products
-     ```
+### 3) Start development servers
+```bash
+# terminal 1
+npm --prefix server run dev
 
-5. Run the server:
-   ```bash
-   cd server
-   npm run dev
-   ```
+# terminal 2
+npm --prefix client run dev
+```
 
-6. Run the client:
-   ```bash
-   cd ..\client
-   npm run dev
-   ```
+- Client runs on `http://localhost:5173`
+- API runs on `http://localhost:3000`
 
-## Deployment (Render)
-- Build command:
-  ```bash
-  cd server && npm install
-  cd ..\client && npm install
-  npm run build
-  ```
-- Start command:
-  ```bash
-  cd server && npm start
-  ```
-- Set environment variables in Render:
-  - `MONGO_URL`, `JWT_SECRET`, `CLIENT_ORIGIN` (comma-separated list allowed), `PORT`
+## Environment variables
+### `server/.env`
+- `PORT`: API server port (default `3000`).
+- `MONGO_URL`: MongoDB connection string. Create from MongoDB Atlas Database > Connect > Drivers.
+- `JWT_SECRET`: random secret used to sign auth tokens (`openssl rand -base64 32` works well).
+- `CLIENT_ORIGIN`: allowed browser origin(s) for CORS. Use comma-separated values for multiple environments.
 
-## Usage
+### `client/.env`
+- `VITE_API_URL`: base API URL consumed by client (`http://localhost:3000/api` locally).
+- `VITE_SERVER_URL`: product endpoint URL used by product service calls.
 
-- After completing the installation steps, you can start browsing the e-shop, add products to your cart, and proceed to checkout.
+## Seed/demo data
+Create users directly through the UI (`/register`) or API:
+```bash
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Admin","email":"admin@example.com","password":"password123"}'
+```
 
-## Live Demo
+To mark a user as admin for local testing, update the user role in MongoDB (`role: "admin"`) and re-login.
 
-Check out the live demo [here](https://fullstack-eshop-production.up.railway.app/).
+To seed sample products:
+```bash
+npm --prefix server run seed
+```
 
-## Contribution Guidelines
+## Screenshots
+- Screenshot guidance and placeholders: [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md)
+- Place image files under `docs/screenshots/`
 
-- Contributions are welcome! Please fork the repository and submit a pull request for review.
+## Testing
+```bash
+# server API tests + server syntax lint
+npm --prefix server run lint
+npm --prefix server test
 
-## License
+# client lint + smoke test + production build
+npm --prefix client run lint
+npm --prefix client test
+npm --prefix client run build
+```
 
-- This project is licensed under the MIT License.
+## CI
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every pull request and performs:
+- **Server job:** install, lint, API tests
+- **Client job:** install, lint, smoke test, build
+
+## Roadmap
+- Add end-to-end checkout coverage (browser-level tests).
+- Add API OpenAPI/Swagger documentation.
+- Improve order lifecycle (paid/shipped statuses + events).
+- Add richer observability (structured logs and health checks).
+- Introduce role-based admin dashboard analytics.
+
+## Tradeoffs
+- Backend API tests currently mock model persistence to keep CI fast and deterministic.
+- Frontend test scope is a smoke-level server-render check, not full browser interaction coverage.
+- Client still uses a direct product endpoint env variable for compatibility with existing code.
+- Architecture remains intentionally simple (monorepo with two apps) over heavier workspace tooling.
