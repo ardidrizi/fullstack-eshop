@@ -5,10 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run remove-build && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "remove-build": "node ../server/scripts/clean-public.js",
     "test": "node ./scripts/smoke-test.mjs"
   },
   "dependencies": {
