@@ -82,6 +82,22 @@ To seed sample products:
 npm --prefix server run seed
 ```
 
+## Health endpoints
+The API exposes lightweight operational endpoints suitable for Render (and similar PaaS health probes):
+
+- `GET /health` returns `200` with process-level metadata and does **not** require auth or database access.
+- `GET /ready` returns:
+  - `200` when `mongoose.connection.readyState === 1` (connected)
+  - `503` otherwise
+
+Example:
+```bash
+curl -i http://localhost:3000/health
+curl -i http://localhost:3000/ready
+```
+
+> Note: Render free-tier services may cold start after inactivity, so first probe latency can be higher.
+
 ## Screenshots
 - Screenshot guidance and placeholders: [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md)
 - Place image files under `docs/screenshots/`
