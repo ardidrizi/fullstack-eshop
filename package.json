@@ -4,5 +4,14 @@
   "scripts": {
     "build": "npm --prefix client install && npm --prefix client run build",
     "start": "npm --prefix server start"
-  }
+  },
+  "description": "MERN e-commerce portfolio project with authentication, cart, orders, and admin product management.",
+  "keywords": [
+    "mern",
+    "ecommerce",
+    "portfolio",
+    "react",
+    "express",
+    "mongodb"
+  ]
 }
