@@ -64,8 +64,7 @@ npm --prefix client run dev
 - `CLIENT_ORIGIN`: allowed browser origin(s) for CORS. Use comma-separated values for multiple environments.
 
 ### `client/.env`
-- `VITE_API_URL`: base API URL consumed by client (`http://localhost:3000/api` locally).
-- `VITE_SERVER_URL`: product endpoint URL used by product service calls.
+- `VITE_API_URL`: base API URL consumed by client (`http://localhost:3000/api` locally). For Vercel + Render set `VITE_API_URL=https://<render-service>.onrender.com/api`.
 
 ## Seed/demo data
 Create users directly through the UI (`/register`) or API:
@@ -98,6 +97,11 @@ curl -i http://localhost:3000/ready
 
 > Note: Render free-tier services may cold start after inactivity, so first probe latency can be higher.
 
+
+## Troubleshooting
+- If API calls are going to `/api` on Vercel, `VITE_API_URL` is likely missing in the Vercel project environment settings.
+- If you see CORS errors, configure backend CORS (`CLIENT_ORIGIN`) to include your Vercel domain.
+
 ## Screenshots
 - Screenshot guidance and placeholders: [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md)
 - Place image files under `docs/screenshots/`
@@ -129,5 +133,5 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every pull request 
 ## Tradeoffs
 - Backend API tests currently mock model persistence to keep CI fast and deterministic.
 - Frontend test scope is a smoke-level server-render check, not full browser interaction coverage.
-- Client still uses a direct product endpoint env variable for compatibility with existing code.
+- Client API URL configuration now uses a single source of truth (`VITE_API_URL`) to reduce deployment misconfiguration risk.
 - Architecture remains intentionally simple (monorepo with two apps) over heavier workspace tooling.

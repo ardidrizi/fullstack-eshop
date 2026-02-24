@@ -37,7 +37,6 @@ A modern, responsive e-commerce web application where users can browse products,
      ```
    - `client\.env`:
      ```bash
-     VITE_SERVER_URL=http://localhost:3000/api/products
      VITE_API_URL=http://localhost:3000/api
      ```
 
@@ -54,7 +53,7 @@ A modern, responsive e-commerce web application where users can browse products,
    ```
 
 ## Notes
-- The API is served at `http://localhost:3000/api/products`.
-- Update `VITE_SERVER_URL` if your server runs on a different host or port.
+- The API is served at `http://localhost:3000/api` by default in local development.
+- In Vercel production, set `VITE_API_URL=https://<render-service>.onrender.com/api`.
 - Admin seed login: `admin@eshop.dev` / `Admin123!`
 - Run `npm run seed` in `server` to create demo data.
