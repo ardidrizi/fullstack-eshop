@@ -119,3 +119,10 @@
     max-height: 220px;
   }
 }
+
+.product-card-price {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}

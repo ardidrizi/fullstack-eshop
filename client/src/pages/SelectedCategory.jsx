@@ -47,6 +47,8 @@ const SelectedCategory = () => {
               price={product.price}
               description={product.description}
               imgUrl={product.images?.[0] ?? ""}
+              rating={product.ratings ?? 0}
+              numReviews={product.numReviews ?? 0}
             />
           ))
         )}

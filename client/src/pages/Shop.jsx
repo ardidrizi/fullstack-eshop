@@ -49,6 +49,8 @@ const Shop = () => {
                     name={product.name}
                     price={product.price}
                     imgUrl={product.images[0] ?? ""}
+                    rating={product.ratings ?? 0}
+                    numReviews={product.numReviews ?? 0}
                   />
                 </Link>
                 {user && (
