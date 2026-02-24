@@ -3,9 +3,19 @@
 A production-minded MERN e-commerce app showcasing end-to-end shopping flows (auth, cart, orders, and admin product management) with a deployable setup and CI-backed quality checks.
 
 [![CI](https://github.com/ardidrizi/fullstack-eshop/actions/workflows/ci.yml/badge.svg)](https://github.com/ardidrizi/fullstack-eshop/actions/workflows/ci.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?logo=vercel)](https://fullstack-eshop.vercel.app)
 
 ## Live demo
-- Railway: https://fullstack-eshop-production.up.railway.app/
+- **Frontend (Vercel):** https://fullstack-eshop.vercel.app
+- **Backend (Render API Base):** https://fullstack-eshop.onrender.com/api
+- **Backend health:** https://fullstack-eshop.onrender.com/health
+- **Backend readiness:** https://fullstack-eshop.onrender.com/ready
+
+## Project highlights
+- Full authentication-to-order flow with protected user/admin routes and JWT-based access control.
+- Clean monorepo split (`client/` + `server/`) ready for independent cloud deployment.
+- Production health endpoints (`/health`, `/ready`) for uptime checks and platform probes.
+- CI coverage for server lint/tests plus client lint/tests/build on every PR.
 
 ## Key features
 - JWT authentication with protected user and admin routes.
@@ -16,10 +26,13 @@ A production-minded MERN e-commerce app showcasing end-to-end shopping flows (au
 - CI pipeline validating server lint/tests and client lint/tests/build on pull requests.
 
 ## Tech stack
-- **Client:** React, React Router, Vite, ESLint
-- **Server:** Node.js, Express, Mongoose
-- **Database:** MongoDB Atlas (or compatible MongoDB deployment)
-- **Auth:** JWT + bcrypt password hashing
+| Layer | Stack |
+| --- | --- |
+| Client | React, React Router, Vite, ESLint |
+| Server | Node.js, Express, Mongoose |
+| DB | MongoDB Atlas (or compatible MongoDB deployment) |
+| Auth | JWT + bcrypt password hashing |
+| CI | GitHub Actions (`.github/workflows/ci.yml`) |
 
 ## Architecture overview
 This repository is organized as a simple two-app monorepo:
@@ -68,6 +81,37 @@ npm --prefix client run dev
 ### `client/.env`
 - `VITE_API_URL`: base API URL consumed by client (`http://localhost:3000/api` locally). For Vercel + Render set `VITE_API_URL=https://<render-service>.onrender.com/api`.
 
+## Deployment
+### Frontend (Vercel)
+Use the following project settings:
+
+```txt
+Root Directory: client
+Build Command: npm run build
+Output Directory: dist
+```
+
+Set this environment variable in Vercel:
+
+```txt
+VITE_API_URL=https://fullstack-eshop.onrender.com/api
+```
+
+> Vite only exposes `VITE_*` variables to the client bundle, and these variables are injected at build time.
+
+### Backend (Render)
+Set these Render environment variables:
+
+```txt
+MONGO_URI=...
+JWT_SECRET=...
+FRONTEND_URL=https://fullstack-eshop.vercel.app
+```
+
+`FRONTEND_URL` must be the exact frontend origin with **no trailing slash**.
+
+> This repository currently reads `MONGO_URL` in server code. If you deploy this exact codebase without changes, use `MONGO_URL` as the key name in Render.
+
 ## Seed/demo data
 Create users directly through the UI (`/register`) or API:
 ```bash
@@ -101,12 +145,26 @@ curl -i http://localhost:3000/ready
 
 
 ## Troubleshooting
-- If API calls are going to `/api` on Vercel, `VITE_API_URL` is likely missing in the Vercel project environment settings.
-- If browser requests fail with `TypeError: Failed to fetch` but `curl` calls to the API work, the issue is usually CORS/preflight configuration. Check `FRONTEND_URL` on the backend and redeploy after changes.
+### `TypeError: Failed to fetch` checklist
+- Confirm `VITE_API_URL` includes `/api`:
+  - ✅ `https://fullstack-eshop.onrender.com/api`
+  - ❌ `https://fullstack-eshop.onrender.com`
+- Confirm `FRONTEND_URL` matches the exact frontend origin and has **no trailing slash**:
+  - ✅ Correct: `https://fullstack-eshop.vercel.app`
+  - ❌ Incorrect: `https://fullstack-eshop.vercel.app/`
+- Confirm health endpoint returns `200` JSON:
+  - `curl -i https://fullstack-eshop.onrender.com/health`
+- Confirm API 404 handler returns JSON (not HTML):
+  - `curl -i https://fullstack-eshop.onrender.com/api/does-not-exist`
+
+If browser requests fail but `curl` works, re-check backend CORS config (`FRONTEND_URL`) and redeploy Render.
 
 ## Screenshots
 - Screenshot guidance and placeholders: [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md)
 - Place image files under `docs/screenshots/`
+
+![Homepage screenshot placeholder](docs/screenshots/homepage.png)
+![Product page screenshot placeholder](docs/screenshots/product-page.png)
 
 ## Testing
 ```bash
