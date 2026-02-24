@@ -18,7 +18,7 @@ const resetData = () => {
   products.length = 0;
 };
 
-const jsonRequest = (server, method, path, body, token) =>
+const jsonRequest = (server, method, path, body, token, extraHeaders = {}) =>
   new Promise((resolve, reject) => {
     const payload = body ? JSON.stringify(body) : null;
     const req = request.request(
@@ -31,6 +31,7 @@ const jsonRequest = (server, method, path, body, token) =>
           "Content-Type": "application/json",
           ...(payload ? { "Content-Length": Buffer.byteLength(payload) } : {}),
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          ...extraHeaders,
         },
       },
       (res) => {
@@ -162,6 +163,18 @@ test("me endpoint returns current user", async () => {
 
   assert.equal(response.status, 200);
   assert.equal(response.body.user.email, "me@example.com");
+});
+
+
+
+test("OPTIONS /api/products returns CORS preflight headers for local dev origin", async () => {
+  const response = await jsonRequest(server, "OPTIONS", "/api/products", null, null, {
+    Origin: "http://localhost:5173",
+    "Access-Control-Request-Method": "GET",
+  });
+
+  assert.match(String(response.status), /200|204/);
+  assert.equal(response.headers["access-control-allow-origin"], "http://localhost:5173");
 });
 
 test("products list endpoint returns product array", async () => {

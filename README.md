@@ -61,7 +61,9 @@ npm --prefix client run dev
 - `PORT`: API server port (default `3000`).
 - `MONGO_URL`: MongoDB connection string. Create from MongoDB Atlas Database > Connect > Drivers.
 - `JWT_SECRET`: random secret used to sign auth tokens (`openssl rand -base64 32` works well).
-- `CLIENT_ORIGIN`: allowed browser origin(s) for CORS. Use comma-separated values for multiple environments.
+- `FRONTEND_URL`: Vercel frontend origin allowed by backend CORS (for example `https://<vercel-app>.vercel.app`).
+
+> After updating backend environment variables (including `FRONTEND_URL`), redeploy/restart the backend so the new values are applied.
 
 ### `client/.env`
 - `VITE_API_URL`: base API URL consumed by client (`http://localhost:3000/api` locally). For Vercel + Render set `VITE_API_URL=https://<render-service>.onrender.com/api`.
@@ -100,7 +102,7 @@ curl -i http://localhost:3000/ready
 
 ## Troubleshooting
 - If API calls are going to `/api` on Vercel, `VITE_API_URL` is likely missing in the Vercel project environment settings.
-- If you see CORS errors, configure backend CORS (`CLIENT_ORIGIN`) to include your Vercel domain.
+- If browser requests fail with `TypeError: Failed to fetch` but `curl` calls to the API work, the issue is usually CORS/preflight configuration. Check `FRONTEND_URL` on the backend and redeploy after changes.
 
 ## Screenshots
 - Screenshot guidance and placeholders: [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md)
