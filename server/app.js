@@ -15,6 +15,25 @@ const app = express();
 
 app.use(morgan("dev"));
 
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+app.use(express.json({ extended: false }));
+
 app.get("/health", (_req, res) => {
   res.status(200).json({
     ok: true,
@@ -31,19 +50,6 @@ app.get("/ready", (_req, res) => {
     status: isConnected ? "connected" : "disconnected",
   });
 });
-
-const corsOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
-app.use(
-  cors({
-    origin: corsOrigins,
-    optionsSuccessStatus: 200,
-  })
-);
-app.use(express.json({ extended: false }));
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
