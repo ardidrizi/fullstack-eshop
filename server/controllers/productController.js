@@ -64,12 +64,6 @@ const updateProduct = async (req, res) => {
 
 const addProductReview = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
     const rating = Number(req.body.rating);
     const comment = String(req.body.comment || "").trim();
 
@@ -85,16 +79,6 @@ const addProductReview = async (req, res) => {
         .json({ message: "Comment must be between 3 and 1000 characters" });
     }
 
-    const alreadyReviewed = (product.reviews || []).find(
-      (review) => String(review.user) === String(req.user._id)
-    );
-
-    if (alreadyReviewed) {
-      return res
-        .status(400)
-        .json({ message: "You have already reviewed this product" });
-    }
-
     const review = {
       user: req.user._id,
       name: req.user.name,
@@ -103,17 +87,54 @@ const addProductReview = async (req, res) => {
       createdAt: new Date(),
     };
 
-    product.reviews = [...(product.reviews || []), review];
-    product.numReviews = product.reviews.length;
-    product.ratings =
-      product.reviews.reduce((sum, item) => sum + Number(item.rating || 0), 0) /
-      product.numReviews;
+    const result = await Product.updateOne(
+      {
+        _id: req.params.id,
+        "reviews.user": { $ne: req.user._id },
+      },
+      [
+        {
+          $set: {
+            reviews: { $ifNull: ["$reviews", []] },
+            numReviews: { $ifNull: ["$numReviews", 0] },
+            ratings: { $ifNull: ["$ratings", 0] },
+          },
+        },
+        {
+          $set: {
+            reviews: { $concatArrays: ["$reviews", [review]] },
+            numReviews: { $add: ["$numReviews", 1] },
+            ratings: {
+              $round: [
+                {
+                  $divide: [
+                    {
+                      $add: [
+                        { $multiply: ["$ratings", "$numReviews"] },
+                        rating,
+                      ],
+                    },
+                    { $add: ["$numReviews", 1] },
+                  ],
+                },
+                1,
+              ],
+            },
+          },
+        },
+      ]
+    );
 
-    await Product.findByIdAndUpdate(req.params.id, {
-      reviews: product.reviews,
-      numReviews: product.numReviews,
-      ratings: product.ratings,
-    });
+    if (result.matchedCount === 0) {
+      const productExists = await Product.exists({ _id: req.params.id });
+      if (!productExists) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+
+      return res
+        .status(400)
+        .json({ message: "You have already reviewed this product" });
+    }
 
     return res.status(201).json({ message: "Review added" });
   } catch (error) {
