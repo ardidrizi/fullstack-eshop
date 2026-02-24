@@ -32,8 +32,6 @@ app.get("/ready", (_req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, "public")));
-
 const corsOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
@@ -53,15 +51,32 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/admin/products", adminProductRoutes);
 
-app.use((req, res, next) => {
+app.use("/api", (_req, res) => {
+  res.status(404).json({ message: "Not found" });
+});
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get(/^\/(?!api).*/, (req, res, next) => {
   if (/(.ico|.js|.css|.jpg|.png|.map)$/i.test(req.path)) {
-    next();
-  } else {
-    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-    res.header("Expires", "-1");
-    res.header("Pragma", "no-cache");
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    return next();
   }
+
+  res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
+  res.header("Expires", "-1");
+  res.header("Pragma", "no-cache");
+  return res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.use((err, _req, res, _next) => {
+  const statusCode = err.statusCode || 500;
+  const payload = { message: err.message || "Internal server error" };
+
+  if (process.env.NODE_ENV !== "production") {
+    payload.stack = err.stack;
+  }
+
+  res.status(statusCode).json(payload);
 });
 
 module.exports = app;

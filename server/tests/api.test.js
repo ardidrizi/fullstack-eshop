@@ -45,7 +45,7 @@ const jsonRequest = (server, method, path, body, token) =>
           } catch {
             data = raw;
           }
-          resolve({ status: res.statusCode, body: data });
+          resolve({ status: res.statusCode, body: data, headers: res.headers });
         });
       }
     );
@@ -237,4 +237,20 @@ test("admin can delete a product", async () => {
 
   assert.equal(response.status, 200);
   assert.match(response.body.message, /deleted/i);
+});
+
+test("unknown API route returns JSON 404 response", async () => {
+  const response = await jsonRequest(server, "GET", "/api/does-not-exist");
+
+  assert.equal(response.status, 404);
+  assert.equal(response.body.message, "Not found");
+  assert.match(response.headers["content-type"], /application\/json/);
+});
+
+test("GET /api/users/login is not handled by SPA fallback", async () => {
+  const response = await jsonRequest(server, "GET", "/api/users/login");
+
+  assert.equal(response.status, 404);
+  assert.equal(response.body.message, "Not found");
+  assert.match(response.headers["content-type"], /application\/json/);
 });
