@@ -115,6 +115,7 @@ FRONTEND_URL=https://fullstack-eshop.vercel.app
 
 ## Seed/demo data
 The API includes a production-safe seed workflow that inserts missing records by unique key (idempotent by default).
+Product images are sourced from curated per-category image pools so seeded catalogs stay visually realistic and category-consistent.
 
 ### Local seeding
 ```bash
