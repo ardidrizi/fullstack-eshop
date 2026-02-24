@@ -48,6 +48,11 @@ const orderSchema = new mongoose.Schema(
       postalCode: String,
       country: String,
     },
+    seedKey: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
   },
   { timestamps: true }
 );

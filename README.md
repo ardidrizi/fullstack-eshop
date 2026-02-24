@@ -72,7 +72,8 @@ npm --prefix client run dev
 ## Environment variables
 ### `server/.env`
 - `PORT`: API server port (default `3000`).
-- `MONGO_URL`: MongoDB connection string. Create from MongoDB Atlas Database > Connect > Drivers.
+- `MONGO_URI`: MongoDB connection string. Create from MongoDB Atlas Database > Connect > Drivers.
+- `MONGO_URL` (optional): backward-compatible alias for older local configs.
 - `JWT_SECRET`: random secret used to sign auth tokens (`openssl rand -base64 32` works well).
 - `FRONTEND_URL`: Vercel frontend origin allowed by backend CORS (for example `https://<vercel-app>.vercel.app`).
 
@@ -110,22 +111,48 @@ FRONTEND_URL=https://fullstack-eshop.vercel.app
 
 `FRONTEND_URL` must be the exact frontend origin with **no trailing slash**.
 
-> This repository currently reads `MONGO_URL` in server code. If you deploy this exact codebase without changes, use `MONGO_URL` as the key name in Render.
+> The seeding workflow reads `MONGO_URI` first and falls back to `MONGO_URL` for backward compatibility.
 
 ## Seed/demo data
-Create users directly through the UI (`/register`) or API:
+The API includes a production-safe seed workflow that inserts missing records by unique key (idempotent by default).
+
+### Local seeding
 ```bash
-curl -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Admin","email":"admin@example.com","password":"password123"}'
+# optional first run
+cp server/.env.example server/.env
+
+# seeds categories, products, demo users, and demo orders
+npm --prefix server run seed
+
+# optional: clear relevant collections first (only when you explicitly want a reset)
+npm --prefix server run seed:clear
+
+# optional: customize data volume and demo credentials
+SEED_COUNT_PRODUCTS=48 DEMO_ADMIN_EMAIL=owner@eshop.dev DEMO_ADMIN_PASSWORD='StrongAdmin123!' npm --prefix server run seed
 ```
 
-To mark a user as admin for local testing, update the user role in MongoDB (`role: "admin"`) and re-login.
+### Atlas/production seeding
+Run the same script either from your machine (pointing at Atlas) or from Render Shell:
 
-To seed sample products:
 ```bash
+# from local machine against Atlas
+MONGO_URI='mongodb+srv://<user>:<pass>@<cluster>/<db>?retryWrites=true&w=majority' npm --prefix server run seed
+
+# if you intentionally need to rebuild seed data
+MONGO_URI='mongodb+srv://<user>:<pass>@<cluster>/<db>?retryWrites=true&w=majority' npm --prefix server run seed:clear
+```
+
+Render Shell example:
+```bash
+cd /opt/render/project/src
 npm --prefix server run seed
 ```
+
+Environment flags used by the seed script:
+- `SEED_CLEAR=true`: allow deleting existing seed collections before inserting.
+- `SEED_COUNT_PRODUCTS=40`: optional minimum product count.
+- `DEMO_ADMIN_EMAIL`, `DEMO_ADMIN_PASSWORD`: admin demo credentials.
+- `DEMO_USER_EMAIL`, `DEMO_USER_PASSWORD`: primary demo customer credentials.
 
 ## Health endpoints
 The API exposes lightweight operational endpoints suitable for Render (and similar PaaS health probes):
