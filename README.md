@@ -124,7 +124,7 @@ cp server/.env.example server/.env
 # seeds categories, products, demo users, and demo orders
 npm --prefix server run seed
 
-# optional: clear relevant collections first (only when you explicitly want a reset)
+# optional: clear only demo seed records first (only when you explicitly want a reset)
 npm --prefix server run seed:clear
 
 # optional: customize data volume and demo credentials
@@ -149,10 +149,11 @@ npm --prefix server run seed
 ```
 
 Environment flags used by the seed script:
-- `SEED_CLEAR=true`: allow deleting existing seed collections before inserting.
+- `SEED_CLEAR=true`: allow deleting existing demo seed records before inserting.
 - `SEED_COUNT_PRODUCTS=40`: optional minimum product count.
 - `DEMO_ADMIN_EMAIL`, `DEMO_ADMIN_PASSWORD`: admin demo credentials.
 - `DEMO_USER_EMAIL`, `DEMO_USER_PASSWORD`: primary demo customer credentials.
+- `DEMO_USER_TWO_EMAIL`, `DEMO_USER_TWO_PASSWORD`: optional secondary demo customer credentials.
 
 ## Health endpoints
 The API exposes lightweight operational endpoints suitable for Render (and similar PaaS health probes):

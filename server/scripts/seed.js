@@ -16,8 +16,8 @@ const adminEmail = (process.env.DEMO_ADMIN_EMAIL || "admin@eshop.dev").toLowerCa
 const adminPassword = process.env.DEMO_ADMIN_PASSWORD || "Admin123!";
 const demoUserEmail = (process.env.DEMO_USER_EMAIL || "demo.customer@eshop.dev").toLowerCase();
 const demoUserPassword = process.env.DEMO_USER_PASSWORD || "Customer123!";
-const secondUserEmail = "alex.shopper@eshop.dev";
-const secondUserPassword = "Shopper123!";
+const secondUserEmail = (process.env.DEMO_USER_TWO_EMAIL || "alex.shopper@eshop.dev").toLowerCase();
+const secondUserPassword = process.env.DEMO_USER_TWO_PASSWORD || "Shopper123!";
 
 const categorySeeds = [
   {
@@ -231,15 +231,20 @@ async function seed() {
   try {
     await mongoose.connect(mongoUri);
 
+    const products = buildProducts(targetProductCount);
+    const seededCategories = categorySeeds.map((category) => category.slug);
+    const seededProducts = products.map((product) => product.name);
+
     if (shouldClear) {
       await Promise.all([
-        Category.deleteMany({}),
-        Product.deleteMany({}),
-        User.deleteMany({}),
-        Order.deleteMany({}),
+        Category.deleteMany({ slug: { $in: seededCategories } }),
+        Product.deleteMany({ name: { $in: seededProducts } }),
+        User.deleteMany({ email: { $in: [adminEmail, demoUserEmail, secondUserEmail] } }),
+        Order.deleteMany({ seedKey: { $regex: /^demo-order-/ } }),
       ]);
-      console.log("🧹 Existing seed collections cleared (SEED_CLEAR=true).");
+      console.log("🧹 Existing demo seed records cleared (SEED_CLEAR=true).");
     }
+
 
     const categoryResult = await Category.bulkWrite(
       categorySeeds.map((category) => ({
@@ -251,7 +256,6 @@ async function seed() {
       }))
     );
 
-    const products = buildProducts(targetProductCount);
     const productResult = await Product.bulkWrite(
       products.map((product) => ({
         updateOne: {
