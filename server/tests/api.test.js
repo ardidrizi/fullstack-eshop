@@ -96,6 +96,34 @@ Product.findByIdAndUpdate = async (id, payload) => {
   return product;
 };
 Product.findById = async (id) => products.find((p) => p._id === String(id)) || null;
+Product.exists = async (query) =>
+  products.some((p) => p._id === String(query._id)) ? { _id: String(query._id) } : null;
+Product.updateOne = async (filter, pipeline) => {
+  const product = products.find((p) => p._id === String(filter._id));
+  if (!product) {
+    return { matchedCount: 0, modifiedCount: 0 };
+  }
+
+  const duplicateReview = (product.reviews || []).some(
+    (review) => String(review.user) === String(filter["reviews.user"].$ne)
+  );
+
+  if (duplicateReview) {
+    return { matchedCount: 0, modifiedCount: 0 };
+  }
+
+  const insertedReview = pipeline[1].$set.reviews.$concatArrays[1][0];
+  const oldCount = Number(product.numReviews || 0);
+  const oldRating = Number(product.ratings || 0);
+  const newCount = oldCount + 1;
+  const nextAverage = (oldRating * oldCount + Number(insertedReview.rating || 0)) / newCount;
+
+  product.reviews = [...(product.reviews || []), insertedReview];
+  product.numReviews = newCount;
+  product.ratings = Number(nextAverage.toFixed(1));
+
+  return { matchedCount: 1, modifiedCount: 1 };
+};
 Product.findByIdAndDelete = async (id) => {
   const index = products.findIndex((p) => p._id === String(id));
   if (index === -1) return null;
@@ -298,6 +326,42 @@ test("successful review updates numReviews and ratings", async () => {
   assert.equal(products[0].reviews[0].name, "Reviewer");
 });
 
+test("multiple reviews update running average rating", async () => {
+  const hashed = await bcrypt.hash("password123", 10);
+  users.push({ _id: "1", name: "Alice", email: "alice@example.com", password: hashed, role: "user" });
+  users.push({ _id: "2", name: "Bob", email: "bob@example.com", password: hashed, role: "user" });
+  products.push({
+    _id: "1",
+    name: "Keyboard",
+    reviews: [],
+    numReviews: 0,
+    ratings: 0,
+  });
+
+  const tokenOne = jwt.sign({ id: "1" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const tokenTwo = jwt.sign({ id: "2" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  const first = await jsonRequest(
+    server,
+    "POST",
+    "/api/products/1/reviews",
+    { rating: 4, comment: "Very good keyboard" },
+    tokenOne
+  );
+  const second = await jsonRequest(
+    server,
+    "POST",
+    "/api/products/1/reviews",
+    { rating: 5, comment: "Excellent feel and response" },
+    tokenTwo
+  );
+
+  assert.equal(first.status, 201);
+  assert.equal(second.status, 201);
+  assert.equal(products[0].numReviews, 2);
+  assert.equal(products[0].ratings, 4.5);
+});
+
 test("duplicate review is blocked", async () => {
   const hashed = await bcrypt.hash("password123", 10);
   users.push({ _id: "1", name: "Reviewer", email: "reviewer@example.com", password: hashed, role: "user" });
@@ -328,6 +392,33 @@ test("duplicate review is blocked", async () => {
 
   assert.equal(response.status, 400);
   assert.equal(response.body.message, "You have already reviewed this product");
+});
+
+test("concurrent review submissions by different users are both persisted", async () => {
+  const hashed = await bcrypt.hash("password123", 10);
+  users.push({ _id: "1", name: "User One", email: "one@example.com", password: hashed, role: "user" });
+  users.push({ _id: "2", name: "User Two", email: "two@example.com", password: hashed, role: "user" });
+  products.push({
+    _id: "1",
+    name: "Phone",
+    reviews: [],
+    numReviews: 0,
+    ratings: 0,
+  });
+
+  const tokenOne = jwt.sign({ id: "1" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const tokenTwo = jwt.sign({ id: "2" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  const [first, second] = await Promise.all([
+    jsonRequest(server, "POST", "/api/products/1/reviews", { rating: 3, comment: "Does the job" }, tokenOne),
+    jsonRequest(server, "POST", "/api/products/1/reviews", { rating: 5, comment: "Fantastic value" }, tokenTwo),
+  ]);
+
+  assert.equal(first.status, 201);
+  assert.equal(second.status, 201);
+  assert.equal(products[0].reviews.length, 2);
+  assert.equal(products[0].numReviews, 2);
+  assert.equal(products[0].ratings, 4);
 });
 test("unknown API route returns JSON 404 response", async () => {
   const response = await jsonRequest(server, "GET", "/api/does-not-exist");
