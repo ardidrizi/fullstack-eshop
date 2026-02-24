@@ -169,7 +169,6 @@ function buildProducts(count) {
       tags: [category.slug, ...category.tags, `featured-${(index % 6) + 1}`],
       images,
       createdAt,
-      updatedAt: createdAt,
       ratings: Number((3.8 + ((index % 12) * 0.1)).toFixed(1)),
       numReviews: 8 + (index % 90),
     });
