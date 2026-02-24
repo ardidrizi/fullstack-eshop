@@ -35,6 +35,12 @@ const productSchema = mongoose.Schema(
         required: true,
       },
     ],
+    tags: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
     ratings: {
       type: Number,
       default: 0,

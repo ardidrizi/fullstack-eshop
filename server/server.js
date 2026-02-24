@@ -4,10 +4,15 @@ const app = require("./app");
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "0.0.0.0";
-const MONGO_URL = process.env.MONGO_URL;
+const mongoUri = process.env.MONGO_URI || process.env.MONGO_URL;
+
+if (!mongoUri) {
+  console.error("Missing MongoDB connection string. Set MONGO_URI (or MONGO_URL for backward compatibility).");
+  process.exit(1);
+}
 
 mongoose
-  .connect(MONGO_URL)
+  .connect(mongoUri)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, HOST, () => {
