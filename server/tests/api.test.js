@@ -252,6 +252,83 @@ test("admin can delete a product", async () => {
   assert.match(response.body.message, /deleted/i);
 });
 
+
+
+test("add review requires auth", async () => {
+  products.push({
+    _id: "1",
+    name: "Monitor",
+    reviews: [],
+    numReviews: 0,
+    ratings: 0,
+  });
+
+  const response = await jsonRequest(server, "POST", "/api/products/1/reviews", {
+    rating: 5,
+    comment: "Great monitor",
+  });
+
+  assert.equal(response.status, 401);
+});
+
+test("successful review updates numReviews and ratings", async () => {
+  const hashed = await bcrypt.hash("password123", 10);
+  users.push({ _id: "1", name: "Reviewer", email: "reviewer@example.com", password: hashed, role: "user" });
+  products.push({
+    _id: "1",
+    name: "Laptop",
+    reviews: [],
+    numReviews: 0,
+    ratings: 0,
+  });
+  const token = jwt.sign({ id: "1" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  const response = await jsonRequest(
+    server,
+    "POST",
+    "/api/products/1/reviews",
+    { rating: 4, comment: "Solid and reliable laptop" },
+    token
+  );
+
+  assert.equal(response.status, 201);
+  assert.equal(products[0].numReviews, 1);
+  assert.equal(products[0].ratings, 4);
+  assert.equal(products[0].reviews.length, 1);
+  assert.equal(products[0].reviews[0].name, "Reviewer");
+});
+
+test("duplicate review is blocked", async () => {
+  const hashed = await bcrypt.hash("password123", 10);
+  users.push({ _id: "1", name: "Reviewer", email: "reviewer@example.com", password: hashed, role: "user" });
+  products.push({
+    _id: "1",
+    name: "Laptop",
+    reviews: [
+      {
+        user: "1",
+        name: "Reviewer",
+        rating: 5,
+        comment: "Excellent",
+        createdAt: new Date().toISOString(),
+      },
+    ],
+    numReviews: 1,
+    ratings: 5,
+  });
+  const token = jwt.sign({ id: "1" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  const response = await jsonRequest(
+    server,
+    "POST",
+    "/api/products/1/reviews",
+    { rating: 4, comment: "Updating review" },
+    token
+  );
+
+  assert.equal(response.status, 400);
+  assert.equal(response.body.message, "You have already reviewed this product");
+});
 test("unknown API route returns JSON 404 response", async () => {
   const response = await jsonRequest(server, "GET", "/api/does-not-exist");
 

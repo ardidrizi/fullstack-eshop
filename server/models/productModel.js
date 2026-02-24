@@ -2,6 +2,37 @@ const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema(
   {
+    reviews: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        rating: {
+          type: Number,
+          required: true,
+          min: [1, "Rating must be at least 1"],
+          max: [5, "Rating cannot exceed 5"],
+        },
+        comment: {
+          type: String,
+          required: true,
+          trim: true,
+          minlength: [3, "Comment must be at least 3 characters long"],
+          maxlength: [1000, "Comment cannot exceed 1000 characters"],
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     name: {
       type: String,
       required: [true, "Please enter the product name"],
@@ -51,20 +82,6 @@ const productSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    reviews: [
-      {
-        rating: {
-          type: Number,
-          required: true,
-          min: [1, "Rating must be at least 1"],
-          max: [5, "Rating cannot exceed 5"],
-        },
-        comment: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
     createdAt: {
       type: Date,
       default: Date.now,

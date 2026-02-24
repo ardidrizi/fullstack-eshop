@@ -8,6 +8,7 @@ const {
   deleteProduct,
   getProductsByCategory,
   searchProducts,
+  addProductReview,
 } = require("../controllers/productController");
 const { requireAuth, requireAdmin } = require("../middleware/auth");
 
@@ -18,6 +19,7 @@ router.post("/", requireAuth, requireAdmin, createProduct);
 router.get("/search", searchProducts);
 
 router.delete("/:id", requireAuth, requireAdmin, deleteProduct);
+router.post("/:id/reviews", requireAuth, addProductReview);
 // Get a single with id
 router.get("/:id", getProduct);
 
